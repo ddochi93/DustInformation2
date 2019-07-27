@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="원하는 지역의 미세먼지 정보를 확인하세요."
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+    <EditText
+        android:id="@+id/city_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="주소 입력(읍면동)"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="예)관악구 신림동, 동작구 상도1동"
+        android:textStyle="italic"/>
+
+</LinearLayout>
