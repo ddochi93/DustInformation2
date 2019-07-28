@@ -3,11 +3,9 @@ package com.ddochi.util;
 import com.ddochi.model.cur_location.CurLocation;
 import com.ddochi.model.dust_material.FineDust;
 import com.ddochi.model.nearby_station.StationInfo;
-import com.ddochi.model.tm_coordinates.Documents;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.Query;
 
 public interface FineDustApi {
@@ -41,12 +39,4 @@ public interface FineDustApi {
                                      @Query("tmY")String tmY );
 
 
-
-    //?뒤에 문제없나 확인
-    @Headers("Authorization:KakaoAK b80c0256e499fc599177397d95690f0d")
-    @GET("https://dapi.kakao.com/v2/local/geo/transcoord.json")
-    Call<Documents> getDocuments(@Query("x")double x,
-                                 @Query("y")double y,
-                                 @Query("input_coord")String input_coord,
-                                 @Query("output_coord")String output_coord);
 }

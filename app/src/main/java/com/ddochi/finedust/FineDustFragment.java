@@ -79,7 +79,7 @@ public class FineDustFragment extends Fragment implements FineDustContract.View 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true); //이거 뭐임?
+       // setHasOptionsMenu(true); //이거 뭐임?
     }
 
 
@@ -202,7 +202,7 @@ public class FineDustFragment extends Fragment implements FineDustContract.View 
             String curLocation = getArguments().getString("curLocation");
             mFragmentIndex = getArguments().getInt("fragmentIndex");
             Log.d("여기서의 답",mFragmentIndex+"");
-            mListButton.setText(mFragmentIndex+"");
+           // mListButton.setText();
 
             //예외적으로 여기서 표시해준다.
             mCurLocation.setText(curLocation);
@@ -210,13 +210,12 @@ public class FineDustFragment extends Fragment implements FineDustContract.View 
         }else{
             Log.d("FineDustFragment","onActivityCreated넣어");
             mRepository = new LocationFineDustRepository(); //이유있다?
-            ((MainActivity)getActivity()).getLastKnownLocation();
+            ((MainActivity)getActivity()).getLastKnownLocation(); //이거 안하면 권한요청 x
+            return; //가능?
             //위치 받아오도록 해라...(getLastKnownLocation) 첫 화면
         }
-
         mPresenter = new FineDustPresenter(mRepository,this);
         mPresenter.loadFineDustData();
-
     }
 /*
     @Override
@@ -240,10 +239,9 @@ public class FineDustFragment extends Fragment implements FineDustContract.View 
     }
 
     @Override
-    public void showFineDustResult(FineDust fineDust) {
+    public synchronized void  showFineDustResult(FineDust fineDust) {
         //1.로딩이 끝나면 결과를 보여주는 부분.
         //일일 트래픽이 500제한이므로 여기에 대한 예외처리가 필요함.
-       // Log.d("이거뭐지",fineDust.getList().get(0).getPm10Value());
         int pm25Value = -1;
         int pm10Value = -1;
         try {
@@ -253,37 +251,37 @@ public class FineDustFragment extends Fragment implements FineDustContract.View 
         }catch (NumberFormatException e) {
            Log.e("FineDustFragment","측정소에서 수치가 - 로 측정됨");
         }
+        if(isAdded() && getActivity() != null) {
+            mStationName.setText("(측정소 명 : " + fineDust.getParm().getStationName() + ")");
 
-        mStationName.setText("(측정소 명 : " + fineDust.getParm().getStationName() + ")");
+            mEstimateTime.setText("측정 일시 : " + fineDust.getList().get(0).getDataTime());
+            mPm10State.setText("미세먼지 수치 : " + pm10Value + "㎍/㎥ ");
+            mPm25State.setText("초미세먼지 수치 : " + pm25Value + "㎍/㎥ ");
 
-        mEstimateTime.setText("측정 일시 : " + fineDust.getList().get(0).getDataTime());
-        mPm10State.setText("미세먼지 수치 : " + pm10Value +"㎍/㎥ ");
-        mPm25State.setText("초미세먼지 수치 : "+pm25Value + "㎍/㎥ ");
-
-        if(pm10Value == -1) {
-            mState.setText("측정소 점검중입니다 ㅠㅠ");
-            //여기서 말고 retrofit받아올떄 해도 되나?(20190720태인)
-        }
-        else if(pm10Value <= 30) {
-            mScrollView.setBackgroundColor(getResources().getColor(R.color.좋음));
-            mState.setText("좋음!");
-            mEmoji.setImageResource(R.drawable.laughing);
-        } else if(pm10Value <= 50 ) {
-            mScrollView.setBackgroundColor(getResources().getColor(R.color.보통));
-            mState.setText("보통");
-            mEmoji.setImageResource(R.drawable.smiley);
-        } else if(pm10Value <= 100 ) {
-            mScrollView.setBackgroundColor(getResources().getColor(R.color.나쁨));
-            mState.setText("나쁨");
-            mEmoji.setImageResource(R.drawable.bad);
-        } else if(pm10Value <= 150) {
-            mScrollView.setBackgroundColor(getResources().getColor(R.color.매우나쁨));
-            mState.setText("매우나쁨");
-            mEmoji.setImageResource(R.drawable.crying);
-        } else {
-            mScrollView.setBackgroundColor(getResources().getColor(R.color.최악));
-            mState.setText("최악!");
-            mEmoji.setImageResource(R.drawable.gasmask);
+            if (pm10Value == -1) {
+                mState.setText("측정소 점검중입니다 ㅠㅠ");
+                //여기서 말고 retrofit받아올떄 해도 되나?(20190720태인)
+            } else if (pm10Value <= 30) {
+                mScrollView.setBackgroundColor(getResources().getColor(R.color.좋음));
+                mState.setText("좋음!");
+                mEmoji.setImageResource(R.drawable.laughing);
+            } else if (pm10Value <= 50) {
+                mScrollView.setBackgroundColor(getResources().getColor(R.color.보통));
+                mState.setText("보통");
+                mEmoji.setImageResource(R.drawable.smiley);
+            } else if (pm10Value <= 100) {
+                mScrollView.setBackgroundColor(getResources().getColor(R.color.나쁨));
+                mState.setText("나쁨");
+                mEmoji.setImageResource(R.drawable.bad);
+            } else if (pm10Value <= 150) {
+                mScrollView.setBackgroundColor(getResources().getColor(R.color.매우나쁨));
+                mState.setText("매우나쁨");
+                mEmoji.setImageResource(R.drawable.crying);
+            } else {
+                mScrollView.setBackgroundColor(getResources().getColor(R.color.최악));
+                mState.setText("최악!");
+                mEmoji.setImageResource(R.drawable.gasmask);
+            }
         }
     }
 
@@ -308,6 +306,7 @@ public class FineDustFragment extends Fragment implements FineDustContract.View 
     @Override
     public void reload(int numOfRows, int pageNo, String stationName, String dataTerm,String umd) {
         //umd는 첫 fragment생성시(현재위치)에만 쓴다.
+        mListButton.setVisibility(View.INVISIBLE);
         mCurLocation.setText(umd);
         mRepository = new LocationFineDustRepository(numOfRows,pageNo,stationName,dataTerm);
         mPresenter = new FineDustPresenter(mRepository,this);

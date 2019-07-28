@@ -41,6 +41,10 @@ public class FineDustPresenter implements FineDustContract.UserActionsListener {
                 }
             });
         }
+        else {
+            mView.showLoadError("측정소 찾기 실패");
+            //Log.d("FineDustPresenter","측정소 찾기 실패:");
+        }
 
     }
 }
