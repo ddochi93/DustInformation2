@@ -56,6 +56,7 @@ public class FineDustFragment extends Fragment implements FineDustContract.View 
 
     private int mFragmentIndex;
 
+    
 
 
     public static FineDustFragment newInstance(int numOfRows, int pageNo,String stationName, String dataTerm,String curLocation,int fragmentIndex) {
@@ -69,7 +70,7 @@ public class FineDustFragment extends Fragment implements FineDustContract.View 
         args.putInt("fragmentIndex",fragmentIndex);
         FineDustFragment fragment = new FineDustFragment();
         fragment.setArguments(args);
-        return fragment;                    //지역추가 시 요청을 args로 넘기는건가?
+        return fragment;
     }
 
     public FineDustFragment() {
@@ -79,7 +80,6 @@ public class FineDustFragment extends Fragment implements FineDustContract.View 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // setHasOptionsMenu(true); //이거 뭐임?
     }
 
 
@@ -98,7 +98,7 @@ public class FineDustFragment extends Fragment implements FineDustContract.View 
         mCurLocation = view.findViewById(R.id.cur_location);
 
 
-        //뷰페이저에 프래그먼트 들어오고 나갈때마다 새로 받아온다? 그래서 값들을 저장한뒤 불러오는 코드? (아닌듯...)
+
         if(savedInstanceState != null) {
             //mStationName.setText(savedInstanceState.getString());
             Log.d("FineDustFragment","여기에 복구할 코드 넣으시오");
@@ -120,6 +120,7 @@ public class FineDustFragment extends Fragment implements FineDustContract.View 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                ((MainActivity)getActivity()).getLastKnownLocation();
                 mPresenter.loadFineDustData();
             }
         });
@@ -306,6 +307,7 @@ public class FineDustFragment extends Fragment implements FineDustContract.View 
     @Override
     public void reload(int numOfRows, int pageNo, String stationName, String dataTerm,String umd) {
         //umd는 첫 fragment생성시(현재위치)에만 쓴다.
+
         mListButton.setVisibility(View.INVISIBLE);
         mCurLocation.setText(umd);
         mRepository = new LocationFineDustRepository(numOfRows,pageNo,stationName,dataTerm);

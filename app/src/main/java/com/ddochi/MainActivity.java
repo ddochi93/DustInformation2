@@ -41,6 +41,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+
     public static final int REQUEST_CODE_FINE_COARSE_PERMISSION = 1000;
     private ViewPager mViewPager;
 
