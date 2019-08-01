@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "317047686352",
+    "firebase_url": "https://dustinformation.firebaseio.com",
+    "project_id": "dustinformation",
+    "storage_bucket": "dustinformation.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:317047686352:android:d41f66c53a6371d3",
+        "android_client_info": {
+          "package_name": "com.ddochi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "317047686352-q4idibuqh88745g58oegle6tftgjsftl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeJ0m0GfRn3z9A-w1oT_ASbvbvSNV1WIk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "317047686352-q4idibuqh88745g58oegle6tftgjsftl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
